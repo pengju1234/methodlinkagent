@@ -1,15 +1,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.zh</groupId>
-  <artifactId>myagent</artifactId>
+  <groupId>com.boc</groupId>
+  <artifactId>methodlinkagent</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   
   <dependencies>
-    <dependency>
-      <groupId>javassist</groupId>
-      <artifactId>javassist</artifactId>
-      <version>3.12.1.GA</version>
-    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.javassist/javassist -->
+	<dependency>
+	    <groupId>org.javassist</groupId>
+	    <artifactId>javassist</artifactId>
+	    <version>3.20.0-GA</version>
+	</dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
@@ -18,7 +19,7 @@
   </dependencies>
 
   <build>
-    <finalName>myagent</finalName>
+    <finalName>methodlinkagent</finalName>
     <plugins>
       <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -35,7 +36,7 @@
 						</manifest>
 						<manifestEntries>
 							<!-- 修改MANIFEST.MF文件的参数，即指出premain方法的包路径、类名 -->
-							<Premain-Class>test.MyAgent</Premain-Class>
+							<Premain-Class>com.boc.accuratetest.MyAgent</Premain-Class>
 						</manifestEntries>
 					</archive>
  
