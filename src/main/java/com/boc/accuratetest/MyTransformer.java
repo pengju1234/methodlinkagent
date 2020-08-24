@@ -261,11 +261,6 @@ public class MyTransformer implements ClassFileTransformer {
 				"				}\r\n"+
 				"				}";
 	}
-	public static void ttt(String params) {
-	}
-	public static void t() {
-		
-	}
 	public static void main(String[] args) throws NotFoundException, CannotCompileException {
 		String insertMethod = insertMethod_currentParams("classname", "methodName", "params");
 		System.out.println(insertMethod);
