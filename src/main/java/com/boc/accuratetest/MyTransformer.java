@@ -69,7 +69,7 @@ public class MyTransformer implements ClassFileTransformer {
         }
         try {
         	ClassPool classPool = ClassPool.getDefault();
-        	//classPool.appendClassPath(new LoaderClassPath(loader)); // 指定类加载器
+        	classPool.appendClassPath(new LoaderClassPath(loader)); // 指定类加载器
         	//CtClass ctclass = classPool.get(className);
         	CtClass ctclass = classPool.makeClass(new ByteArrayInputStream(classfileBuffer));
             for(CtMethod ctMethod : ctclass.getDeclaredMethods()){
