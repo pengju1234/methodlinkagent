@@ -78,7 +78,7 @@ public class MyAgent {
 		        	         * 	3、正常点击结束时，只会发送lastLine、和测试用例调用到的方法
 		        	         */
 		        	        String lastLineTemp = null;
-		        	        while ((tempStr = reader.readLine()) != null) { // 读整个文件，从最开始读
+		        	        while ((tempStr = reader.readLine()) != null) { // 读整个文件
 		        	        	if(NumberOfVisits == 1) { // 首次访问，首次获取数据（只能是首次点击开始）
 		        	        		//
 		        	        	}else {
@@ -108,25 +108,24 @@ public class MyAgent {
 		        			String gen = System.getProperty("user.dir");
 		        			BufferedReader reader = new BufferedReader(new FileReader(new File(gen+"/chazhuang.txt")));
 		        	        String tempStr = null;
-		        	        StringBuilder sbWrite = new StringBuilder();
+		        	        StringBuilder sb2 = new StringBuilder();
 		        	        while ((tempStr = reader.readLine()) != null) { // 读整个文件，从最开始读
-		        	        	sbWrite.append(tempStr+"\r\n");
+		        	        	if(tempStr.contains("(")) {
+		        	        		String substring = tempStr.substring(tempStr.indexOf(".")+1, tempStr.length());
+		        	        		sb2.append(substring+"\r\n");
+		        	        	}
 		        	        }
-		        	        String contents = appendParams(sbWrite.toString()); // 补参数类型
-		        	        String[] lines = contents.split("\r\n"); // 原始数据的每一行（包前面的时间等等已经去掉了）
+		        	        String[] lines = sb2.toString().split("\r\n"); // 原始数据的每一行（包前面的时间已经去掉了）
 		                    Set<String> linesSet = new HashSet<>(); // 去重
 		                    for (String line : lines) {
-		                    	if(lines.equals("java.lang.Thread.getStackTrace()")) {
-		                    		continue;
-		                    	}
 		                    	linesSet.add(line);
 		        			}
-		                    StringBuilder sb2 = new StringBuilder();
+		                    StringBuilder sb3 = new StringBuilder();
 		        	        for (String line : linesSet) {
-		        	        	sb2.append(line+"\r\n");
+		        	        	sb3.append(line+"\r\n");
 							}
 		                    
-		        	        pw.write(sb2.toString());
+		        	        pw.write(sb3.toString());
         	        		pw.flush();
 		        	        reader.close();
 		        		}
@@ -157,34 +156,5 @@ public class MyAgent {
 		        }
 			}
 		}).start();
-	}
-	/**
-	 * 	收集的原始数据，补上参数类型。
-	 * @param contents
-	 * @param testExampleId
-	 * @return
-	 */
-	public static String appendParams(String contents) {
-		StringBuilder sb = new StringBuilder();
-		String[] lines = contents.split("\r\n");
-		List<String> linesForFindParams = new ArrayList<>();
-		for (int i=0;i<lines.length;i++) { // 每一个方法的堆栈链 中 的每一行
-			// 截取（不要随机数、时间）
-			String line = lines[i].substring(lines[i].indexOf(".")+1, lines[i].length());
-			linesForFindParams.add(line);
-			if(!line.contains("(") && !line.contains("java.lang.Thread.getStackTrace")) {
-				// 补齐参数类型：后头找，使用第二个遇到的同包、同类、同方法名，并且有参数类型的（重载方法嵌套调用的、异步方法调用的，不能这样找，以后再解决）
-				for(int j=linesForFindParams.size()-1;j>=0;j--) {
-					if(linesForFindParams.get(j).contains(line+"(")) {
-						line = linesForFindParams.get(j);
-					}
-				}
-			}
-			if(!line.contains("(")) { // 没找到，暂时默认没有
-				line = line+"()";
-			}
-			sb.append(line+"\r\n");
-		}
-		return sb.toString();
 	}
 }
