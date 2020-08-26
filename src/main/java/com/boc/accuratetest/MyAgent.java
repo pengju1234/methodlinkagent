@@ -69,32 +69,32 @@ public class MyAgent {
 		        			// 获取插桩文件
 		        			String gen = System.getProperty("user.dir");
 		        			BufferedReader reader = new BufferedReader(new FileReader(new File(gen+"/chazhuang.txt")));
-		        	        String tempStr = null;
-		        	        StringBuilder sbWrite = new StringBuilder();
-		        	        boolean start = false;
 		        	        /*
 		        	         * 	1、第一次访问，即第一次点击开始时，只会发送lastLine这最后一行
 		        	         * 	2、第二次点击开始时，发送两次用例执行之间的方法，和lastLine最后一行
 		        	         * 	3、正常点击结束时，只会发送lastLine、和测试用例调用到的方法
 		        	         */
+		        			String tempStr = null;
+		        			StringBuilder sbWrite = new StringBuilder();
+		        	        boolean start = false;
 		        	        String lastLineTemp = null;
 		        	        while ((tempStr = reader.readLine()) != null) { // 读整个文件
 		        	        	if(NumberOfVisits == 1) { // 首次访问，首次获取数据（只能是首次点击开始）
 		        	        		//
 		        	        	}else {
+		        	        		if(start == true) {
+		        	        			sbWrite.append(tempStr+"\n");
+		        	        		}
 		        	        		if(lastLine.equals(tempStr)) {
 		        	        			// 开始收集
 		        	        			start = true;
-		        	        			sbWrite.append(tempStr+"\n");
-		        	        		}
-		        	        		if(start == true) {
 		        	        			sbWrite.append(tempStr+"\n");
 		        	        		}
 		        	        	}
 		        	        	lastLineTemp = tempStr;// 临时记录最后一行
 		        	        }
 		        	        if(NumberOfVisits == 1) { // 首次访问，首次获取数据（只能是首次点击开始）
-	        	        		sbWrite.append(lastLine+"\n");
+	        	        		sbWrite.append(lastLineTemp+"\n");
 	        	        	}
 		        	        pw.write(sbWrite.toString());
         	        		pw.flush();
